@@ -128,6 +128,15 @@ const App = () => {
 	const [ orderStatuses, setOrderStatuses ] = useState(JSON.parse((localStorage.getItem('orderStatuses') || 'null')) || {});
 	const [ order, setOrder ] = useState(JSON.parse((localStorage.getItem('orders') || 'null')) || {});
 
+	function setActiveOrder({itemId}) {
+		const nextStatuses = {...orderStatuses};
+
+		nextStatuses[itemId] = 'ACTIVE';
+
+		setOrderStatuses(nextStatuses);
+		localStorage.setItem('orderStatuses', JSON.stringify(nextStatuses));
+	}
+
 	return (
 		<Router>
 			<Switch>
@@ -138,27 +147,21 @@ const App = () => {
 					<Order
 						foodAreas={FOOD_AREAS}
 						order={order}
-						setActiveOrder={({ itemId }) => {
-							const nextStatuses = {...orderStatuses};
-
-							nextStatuses[itemId] = 'ACTIVE';
-
-							setOrderStatuses(nextStatuses);
-							localStorage.setItem('orderStatuses', JSON.stringify(nextStatuses));
-						}}
+						setActiveOrder={setActiveOrder}
 					/>
 				</Route>
 				<Route path="/basket/:areaId/:itemId" exact>
 					<Basket
 						foodAreas={FOOD_AREAS}
 						order={order}
+						setActiveOrder={setActiveOrder}
 					/>
 				</Route>
 				<Route
 					path="/orders"
 					exact
 				>
-					<Orders 
+					<Orders
 						order={order}
 						orderStatuses={orderStatuses}
 						foodAreas={FOOD_AREAS}
@@ -170,17 +173,10 @@ const App = () => {
 							setOrderStatuses(nextStatuses);
 							localStorage.setItem('orderStatuses', JSON.stringify(nextStatuses));
 						}}
-						setActiveOrder={({ itemId }) => {
-							const nextStatuses = {...orderStatuses};
-
-							nextStatuses[itemId] = 'ACTIVE';
-
-							setOrderStatuses(nextStatuses);
-							localStorage.setItem('orderStatuses', JSON.stringify(nextStatuses));
-						}}
+						setActiveOrder={setActiveOrder}
 					/>
 				</Route>
-				<Route 
+				<Route
 					path="/place/:area/:place"
 					render={routeProps => {
 						return (
@@ -201,29 +197,29 @@ const App = () => {
 										};
 									}
 
-									let nextOrderStatuses = {...orderStatuses};
+									// let nextOrderStatuses = {...orderStatuses};
 
-									if (Object.keys(nextOrderStatuses).length === 0) {
-										FOOD_AREAS.forEach(area => {
-											area.items.forEach(item => {
-												item.foods.forEach(food => {
-													if (food.id in order) {
-														const status = item.id === itemId ? 'ACTIVE' : 'DONE';
-
-														nextOrderStatuses[item.id] = status;
-													}
-												});
-											});
-										});
-									}
+									// if (Object.keys(nextOrderStatuses).length === 0) {
+									// 	FOOD_AREAS.forEach(area => {
+									// 		area.items.forEach(item => {
+									// 			item.foods.forEach(food => {
+									// 				if (food.id in order) {
+									// 					const status = item.id === itemId ? 'ACTIVE' : 'DONE';
+									//
+									// 					nextOrderStatuses[item.id] = status;
+									// 				}
+									// 			});
+									// 		});
+									// 	});
+									// }
 
 									const serialized = JSON.stringify(updatedOrder);
-									
+
 									localStorage.setItem('orders', serialized);
-									localStorage.setItem('orderStatuses', JSON.stringify(nextOrderStatuses));
+									// localStorage.setItem('orderStatuses', JSON.stringify(nextOrderStatuses));
 
 									setOrder(updatedOrder);
-									setOrderStatuses(nextOrderStatuses);
+									// setOrderStatuses(nextOrderStatuses);
 								}}
 								onDecrementPosition={({ id, itemId, areaId }) => {
 									const updatedOrder = {...order};

@@ -163,6 +163,12 @@
   font-size: 22px;
   background-color: #4bb34b;
   color: #fff;
+  cursor: pointer;
+}
+
+.Place__order_disabled {
+  background-color: gray;
+  cursor: not-allowed;
 }
 
 .Place__products-wrapper {

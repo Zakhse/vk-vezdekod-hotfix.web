@@ -56,19 +56,9 @@ const Order = ({ match: { params: { areaId, itemId }}, history, foodAreas, setAc
         </h3>
       </div>
       <footer className="Place__footer">
-        <div 
-          to="/orders" 
-          className="Place__order"
-          onClick={() => {
-            setActiveOrder({ itemId });
-
-            setTimeout(() => {
-              history.push('/orders');
-            }, 0);
-          }}
-        >
+        <Link to="/orders" className="Place__order">
           Мои заказы
-        </div>
+        </Link>
       </footer>
     </div>
   );
