@@ -8,12 +8,50 @@ import edit from '../img/edit.svg';
 import './place.css';
 
 
-const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, setActiveOrder, history }) => {
-  const [ faster, setFaster ] = useState(true);
-  const [ time, setTime ] = useState('');
-  const [ selfService, setSelfService ] = useState(false);
-  const area = foodAreas.filter(area => area.id === areaId)[0];
-  const item = area.items.filter(item => item.id === itemId)[0];
+const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, setActiveOrder, history, setOrdersParams, ordersParams }) => {
+  const
+    area = foodAreas.filter(area => area.id === areaId)[0],
+    item = area.items.filter(item => item.id === itemId)[0];
+
+  const currentOrderParams = ordersParams && ordersParams[itemId] || {};
+
+  const
+    [ time, setTimeToState ] = useState(currentOrderParams['time'] || ''),
+    [ selfService, setSelfServiceToState ] = useState('selfService' in currentOrderParams ? currentOrderParams['selfService'] : false),
+    [ faster, setFasterToState ] = useState('faster' in currentOrderParams ? currentOrderParams['faster'] : !selfService);
+
+  function syncOrderParam(key, newVal) {
+    const
+      ordersParamsCopy = JSON.parse(JSON.stringify(ordersParams)),
+      newOrdersParams = {
+        ...ordersParamsCopy,
+        [itemId]: {
+          ...(ordersParamsCopy[itemId] || {}),
+          [key]: newVal
+        }
+      };
+
+    setOrdersParams(newOrdersParams);
+    ordersParams = newOrdersParams;
+  }
+
+  function setTime(newTime) {
+    setTimeToState(newTime);
+
+    syncOrderParam('time', newTime);
+  }
+
+  function setSelfService(newSelfService) {
+    setSelfServiceToState(newSelfService);
+
+    syncOrderParam('selfService', newSelfService);
+  }
+
+  function setFaster(newFaster) {
+    setFasterToState(newFaster);
+
+    syncOrderParam('faster', newFaster);
+  }
 
   const [ price, products ] = useMemo(() => {
     const foodIds = new Set((item.foods || []).map(item => item.id));
@@ -109,8 +147,8 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, setAct
         <h3>Время:</h3>
         <div className="Place__choice-item">
           <span>Как можно быстрее</span>
-          <Checkbox 
-            checked={faster} 
+          <Checkbox
+            checked={faster}
             onToggle={() => {
               if (faster) {
                 setFaster(false);

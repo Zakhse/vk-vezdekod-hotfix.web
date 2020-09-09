@@ -127,6 +127,13 @@ const foodsMap = FOOD_AREAS.reduce((result, area) => {
 const App = () => {
 	const [ orderStatuses, setOrderStatuses ] = useState(JSON.parse((localStorage.getItem('orderStatuses') || 'null')) || {});
 	const [ order, setOrder ] = useState(JSON.parse((localStorage.getItem('orders') || 'null')) || {});
+	const [ ordersParams, setOrdersParamsToState ] = useState(JSON.parse(localStorage.getItem('ordersParams')) || {});
+
+	function setOrdersParams(orderParams) {
+		setOrdersParamsToState(orderParams);
+
+		localStorage.setItem('ordersParams', JSON.stringify(orderParams));
+	}
 
 	function setActiveOrder({itemId}) {
 		const nextStatuses = {...orderStatuses};
@@ -154,7 +161,9 @@ const App = () => {
 					<Basket
 						foodAreas={FOOD_AREAS}
 						order={order}
+						ordersParams={ordersParams}
 						setActiveOrder={setActiveOrder}
+						setOrdersParams={setOrdersParams}
 					/>
 				</Route>
 				<Route
