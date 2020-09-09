@@ -34,7 +34,7 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, setAct
     return [ accounting.formatNumber(result, 0, ' '), products ];
   }, [ order, item ]);
 
-  const orderIsAllowed = price > 0;
+  const orderIsAllowed = price > 0 && (!!time || faster);
 
   return (
     <div className="Place">
@@ -124,6 +124,7 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, setAct
         <div className="Place__choice-item">
           <span>Назначить</span>
           <input
+            type="time"
             value={time}
             onFocus={() => {
               setFaster(false);
