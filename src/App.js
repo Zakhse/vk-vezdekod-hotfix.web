@@ -33,7 +33,7 @@ const FOOD_AREAS = [{
 			name: 'Классик',
 			price: 150,
 		}, {
-			id: 'bigmac',
+			id: 'kfc-fries',
 			image: OneTowar,
 			name: 'Картофель фри',
 			price: 50,
@@ -232,29 +232,29 @@ const App = () => {
 										}
 									}
 
-									let nextOrderStatuses = {...orderStatuses};
+									// let nextOrderStatuses = {...orderStatuses};
 
-									if (Object.keys(nextOrderStatuses).length === 0) {
-										FOOD_AREAS.forEach(area => {
-											area.items.forEach(item => {
-												item.foods.forEach(food => {
-													if (food.id in order) {
-														const status = item.id === itemId ? 'ACTIVE' : 'DONE';
-
-														nextOrderStatuses[item.id] = status;
-													}
-												});
-											});
-										});
-									}
+									// if (Object.keys(nextOrderStatuses).length === 0) {
+									// 	FOOD_AREAS.forEach(area => {
+									// 		area.items.forEach(item => {
+									// 			item.foods.forEach(food => {
+									// 				if (food.id in order) {
+									// 					const status = item.id === itemId ? 'ACTIVE' : 'DONE';
+									//
+									// 					nextOrderStatuses[item.id] = status;
+									// 				}
+									// 			});
+									// 		});
+									// 	});
+									// }
 
 									const serialized = JSON.stringify(updatedOrder);
-									
+
 									localStorage.setItem('orders', serialized);
-									localStorage.setItem('orderStatuses', JSON.stringify(nextOrderStatuses));
+									// localStorage.setItem('orderStatuses', JSON.stringify(nextOrderStatuses));
 
 									setOrder(updatedOrder);
-									setOrderStatuses(nextOrderStatuses);
+									// setOrderStatuses(nextOrderStatuses);
 								}}
 							/>
 						);
