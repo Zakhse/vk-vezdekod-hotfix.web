@@ -1,5 +1,7 @@
-Развёрнутый сайт - kozodoi-club-hack.surge.sh
+Развёрнутый сайт — https://previous-station-vk-vezdekod-eda-app.netlify.app
 
-Для локального развёртывания в корне необходимо выполнить npm i, затем npm start
+Для локального развёртывания в корне необходимо выполнить `yarn install`, затем `yarn start`
 
-Используемая версия ноды - 11.6.0, npm - 6.5.0-next.0
+ Используемые версии:
+ * Node.js - 11.15.0
+ * npm - 6.7.0
