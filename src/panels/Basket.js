@@ -13,7 +13,7 @@ const Basket = ({ match: { params: { areaId, itemId }}, foodAreas, order, setAct
     area = foodAreas.filter(area => area.id === areaId)[0],
     item = area.items.filter(item => item.id === itemId)[0];
 
-  const currentOrderParams = ordersParams && ordersParams[itemId] || {};
+  const currentOrderParams = (ordersParams && ordersParams[itemId]) || {};
 
   const
     [ time, setTimeToState ] = useState(currentOrderParams['time'] || ''),
